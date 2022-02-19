@@ -5,3 +5,4 @@ node_modules
 concepts.txt
 package-lock.json
 .eslintrc.json
+settings.json
