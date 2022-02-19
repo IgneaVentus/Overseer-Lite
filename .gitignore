@@ -1,0 +1,7 @@
+classes/DatabaseManager.js
+central.db
+data
+node_modules
+concepts.txt
+package-lock.json
+.eslintrc.json
