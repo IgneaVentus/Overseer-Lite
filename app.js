@@ -5,7 +5,7 @@ const data = require('./data/data.json');
 const currentTimeout = ['', ''];
 const responders = [];
 
-const bot = new Discord.Client();
+const bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILD_MEMBERS] });
 
 bot.commands = new Discord.Collection();
 
@@ -16,13 +16,12 @@ for (const file of commandFiles) {
 	// set a new item in the Collection
 	// with the key as the command name and the value as the exported module
 	bot.commands.set(command.name, command);
+	console.log ('Command registered: ' + command.name);
 }
 
 bot.on('ready', () => {
-	console.log('bot is ready');
-	bot.guilds.cache.forEach(guild => {
-		console.log(guild.name + ' ' + guild.id);
-	});
+	console.log('\nBot is ready at ' + bot.guilds.cache.get(data.guild).name);
+	message('Rozpocząłem obserwację. Witajcie!');
 });
 
 bot.on('message', async (msg) => {
@@ -32,7 +31,7 @@ bot.on('message', async (msg) => {
 			// Clearing previous countdown in case where master responded again
 			clearTimeout(currentTimeout[0]);
 			clearTimeout(currentTimeout[1]);
-			// Countdown and message sending
+			// Countdown for players and message sending
 			currentTimeout[0] = setTimeout(() => {
 				let responSense = 0;
 				let reply = 'Budzimy się';
@@ -46,12 +45,13 @@ bot.on('message', async (msg) => {
 				reply += '!';
 				// Send message only if someone afked.
 				if (responSense > 0) message(reply);
-				currentTimeout[1] = setTimeout(() => {
-					reply = 'Dodatkowy czas graczy minął, możesz zacząć pisać, Mistrzu <@' + data.master + '>!';
-					// Send message only if someone afked.
-					if (responSense > 0) message(reply);
-				}, data.timerB * 60000);
 			}, (data.timerA * 60000));
+			// Countdown for Master and messeage sending
+			currentTimeout[1] = setTimeout(() => {
+				const reply = 'Dodatkowy czas graczy minął, możesz zacząć pisać, Mistrzu <@' + data.master + '>!';
+				// Send message only if someone afked.
+				message(reply);
+			}, (data.timerA + data.timerB) * 60000);
 		}
 		// Else check if author is part of players and if it is, add it to respondents to not bother someone active.
 		else if (data.players.includes(msg.author.id) && !responders.includes(msg.author.id)) {
@@ -71,7 +71,12 @@ bot.on('message', async (msg) => {
 		// splits off the first word from the array, which will be our command
 		const command = args.shift().toLowerCase();
 
-		await bot.commands.get(command).execute(msg, args);
+		try {
+			await bot.commands.get(command).execute(msg, args, bot);
+		}
+		catch (e) {
+			console.error('Error during command receiving ' + e);
+		}
 	}
 
 });

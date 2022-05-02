@@ -2,7 +2,7 @@ const fs = require('fs');
 module.exports = {
 	name: 'reg',
 	description: 'Manages user registration',
-	async execute(msg, args) {
+	async execute(msg, args, bot) {
 		const data = require('../data/data.json');
 		let reply = '';
 		if (args[0] == 'player') {

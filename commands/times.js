@@ -3,9 +3,8 @@ const fs = require('fs');
 module.exports = {
 	name: 'times',
 	description: 'Allows changing waiting times',
-	async execute(msg, args) {
+	async execute(msg, args, bot) {
 		let reply = '';
-		console.log(args.length);
 		if (args.length > 0) {
 			data.timerA = args[0];
 			data.timerB = args[1];
