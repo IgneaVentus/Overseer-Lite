@@ -4,6 +4,10 @@
     },
     "Bot" : {
         "prefix" : "!ovs",
+<<<<<<< HEAD:settings_template.json
         "token" : "YourTokenHere"
+=======
+        "token" : "Your Token Here"
+>>>>>>> 699331196bf7a1cb49173d14a4de0eb8a98695bf:settings.json
     }
 }
