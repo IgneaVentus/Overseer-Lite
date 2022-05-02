@@ -1,0 +1,9 @@
+{
+    "Author" : {
+        "name":"IgneaVenuts"
+    },
+    "Bot" : {
+        "prefix" : "!ovs",
+        "token" : "YourTokenHere"
+    }
+}

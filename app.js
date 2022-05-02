@@ -31,7 +31,8 @@ bot.on('message', async (msg) => {
 			// Clearing previous countdown in case where master responded again
 			clearTimeout(currentTimeout[0]);
 			clearTimeout(currentTimeout[1]);
-			// Countdown for players and message sending
+			// Countdown for players and message sending, clearing already registered responders
+			responders.length = 0;
 			currentTimeout[0] = setTimeout(() => {
 				let responSense = 0;
 				let reply = 'Budzimy się';
